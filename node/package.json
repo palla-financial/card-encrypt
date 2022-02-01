@@ -1,0 +1,22 @@
+{
+  "name": "palla-rsa-encrypt",
+  "version": "1.0.0",
+  "description": "Card encryption code for use with Palla",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/palla-financial/card-encrypt.git"
+  },
+  "author": "Palla Financial",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/palla-financial/card-encrypt/issues"
+  },
+  "homepage": "https://github.com/palla-financial/card-encrypt#readme",
+  "dependencies": {
+    "node-rsa": "^1.1.1"
+  }
+}
