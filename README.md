@@ -1,13 +1,15 @@
-CARD ENCRYPT
+:credit_card: Card RSA Encryption
 -------------
 
-Thank you for choosing Palla!
+Thank you for choosing Palla!  :money_with_wings:
 
-Please find the following in this repository:
+In this repository you'll find the encryption code necessary to enroll debit cards in the Palla API. There are examples in Node.js and GO.
 
-## --> Releases
+If you need an example for your stack, please contact us for assistance.
 
-The binaries in release are built from the Go source.
+## - Releases
+
+The binaries under releases are built from the Go source. These are safe to use in production as part of your card enrollment flow, but please verify the binary and checksum.
 
 Usage:
 
@@ -15,7 +17,7 @@ Usage:
 ./palla-rsa-encrypt -key my_key.pem -card 4000056655665556 -expr 202901
 ```
 
-## --> Sample node.js code
+## - Node.js
 
 To run the code:
 
@@ -24,9 +26,9 @@ npm install
 node index.js
 ```
 
-Edit `index.js` to contain the correct location of the public key you were provided, as well as the card data.
+To use, edit `index.js` to contain the correct location of the public key you were provided, as well as the card data.
 
-## --> Sample Go code
+## - GO
 
 To build the code:
 
@@ -34,6 +36,6 @@ To build the code:
 go build
 ```
 
-You can cross-compile to other operating systems and system architectures.
+You can cross-compile to other operating systems and system architectures. Here are some examples.
 
 https://freshman.tech/snippets/go/cross-compile-go-programs/
