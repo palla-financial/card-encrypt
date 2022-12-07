@@ -22,12 +22,7 @@ const card = ["4000056655665556", "202412", "111"].join("|")
 const encrypted = key.encrypt(card)
 
 // Encode with URL Safe Base64
-const encoded = URLSafeBase64Encode(encrypted)
+const encoded = encrypted.toString("base64url")
 
 // Output
 console.log(encoded)
-
-function URLSafeBase64Encode(buf){
-    const encoded = Buffer.from(buf).toString("base64")
-    return encoded.replace(/\+/g, '-').replace(/\//g, '_')
-}
