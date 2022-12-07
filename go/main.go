@@ -9,28 +9,41 @@ import (
 	"encoding/pem"
 	"flag"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
+	"os"
 	"strings"
 )
 
 var (
-	keyFlag  = flag.String("key", "", "The provided public key in .pem format")
-	cardFlag = flag.String("card", "", "The card number to encrypt, ex. 4000056655665556")
-	expFlag  = flag.String("expr", "", "The card expiration in YYYYMM format, ex. 202408")
-	cvvFlag  = flag.String("cvv", "000", "The card CVV code")
+	keyFileFlag = flag.String("key-file", "", "(CONDITIONAL) The file path of RSA public key in .pem format")
+	keyDataFlag = flag.String("key-data", "", "(CONDITIONAL) The contents of RSA public key in .pem format.")
+	keyFlag     = flag.String("key", "", "(DEPRECATED, use -key-file) The file path of RSA public key in .pem format")
+	cardFlag    = flag.String("card", "", "(REQUIRED) The card number to encrypt, ex. 4000056655665556")
+	expFlag     = flag.String("expr", "", "(REQUIRED) The card expiration in YYYYMM format, ex. 202408")
+	cvvFlag     = flag.String("cvv", "000", "(OPTIONAL) The card CVV code")
 )
 
 func main() {
 	flag.Parse()
 
-	if *keyFlag == "" || *cardFlag == "" || *expFlag == "" {
+	if *cardFlag == "" || *expFlag == "" {
 		flag.Usage()
 		return
 	}
 
-	// Import and parse key
-	key, err := LoadKey(*keyFlag)
+	if *keyFileFlag == "" && *keyFlag != "" {
+		keyFileFlag = keyFlag
+	}
+
+	// Load key from stdin, key-data flag or key-file flag
+	keyBytes, err := LoadKey(*keyDataFlag, *keyFileFlag)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Parse key data
+	key, err := ParseKey(keyBytes)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -51,18 +64,31 @@ func main() {
 	encoded := base64.URLEncoding.EncodeToString(encrypted)
 
 	// Output
-	fmt.Println(encoded)
+	fmt.Print(encoded)
 }
 
-func LoadKey(filename string) (*rsa.PublicKey, error) {
-	// Read key file
-	bytes, err := ioutil.ReadFile(filename)
+func LoadKey(keydata string, keyfilename string) ([]byte, error) {
+	if keydata != "" {
+		return []byte(keydata), nil
+	}
+
+	keyFile, err := os.Open(keyfilename)
 	if err != nil {
 		return nil, err
 	}
 
+	if stat, err := keyFile.Stat(); err != nil {
+		return nil, err
+	} else if stat.Mode()&os.ModeCharDevice != 0 {
+		return nil, fmt.Errorf("must set key flags")
+	}
+
+	return io.ReadAll(keyFile)
+}
+
+func ParseKey(keyBytes []byte) (*rsa.PublicKey, error) {
 	// Decode PEM
-	block, _ := pem.Decode(bytes)
+	block, _ := pem.Decode(keyBytes)
 	if block == nil || block.Type != "PUBLIC KEY" {
 		return nil, fmt.Errorf("failed to decode PEM block containing public key")
 	}
