@@ -13,8 +13,10 @@ import javax.crypto.spec.PSource;
 
 class Main {  
     public static void main(String args[]) { 
-        // Get string of PEM encoded RSA public key data
-        String pubKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsT+2UBDBHXFVng0tsuUtgU5syromdZGNcpoK60pBLleXjAavLKkgA58YiPUFCuxjRIQsp5Azcxckv76xuZvI+hJc6UqilxydBYigM5jofJMQv4OcBOmylqsrE+8A7T6RGQ9CP63TqA2bBdZsocm3yCPne2CHRfIOvlvEeBSD5hNyCpEzRx57iitMRqC7N6prGiJd9wEmoPp9X0eux4i+0FawAZ2DJTl3rk1dJ0HOmLOX6E3Pu75WwREzWqiT/aYY3B2L/Qd0Od5vNDUG3qaLP22PQGGEfbGI7a9hPIBqxshU5G4hMHSvGNJL24yS+78tefFjZFKjU6k1KlpUCe4AxQIDAQAB";        ;
+        // Get the key file from Palla bucket
+        // Sandbox: https://palla-public-keys.s3.us-east-2.amazonaws.com/card-encrypt/sandbox.json
+        // Production: https://palla-public-keys.s3.us-east-2.amazonaws.com/card-encrypt/prod.json
+        String pubKey = "<pem encoded key file contents>";
         
         // Format card data into correct format, pipe-delineated string
         // Full card number
