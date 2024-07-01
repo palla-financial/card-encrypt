@@ -18,10 +18,9 @@ import (
 var (
 	keyFileFlag = flag.String("key-file", "", "(CONDITIONAL) The file path of RSA public key in .pem format")
 	keyDataFlag = flag.String("key-data", "", "(CONDITIONAL) The contents of RSA public key in .pem format.")
-	keyFlag     = flag.String("key", "", "(DEPRECATED, use -key-file) The file path of RSA public key in .pem format")
 	cardFlag    = flag.String("card", "", "(REQUIRED) The card number to encrypt, ex. 4000056655665556")
-	expFlag     = flag.String("expr", "", "(REQUIRED) The card expiration in YYYYMM format, ex. 202408")
-	cvvFlag     = flag.String("cvv", "000", "(OPTIONAL) The card CVV code")
+	expFlag     = flag.String("expr", "", "(REQUIRED) The card expiration in YYYYMM format, ex. 203208")
+	cvvFlag     = flag.String("cvv", "", "(OPTIONAL) The card CVV code")
 )
 
 func main() {
@@ -30,10 +29,6 @@ func main() {
 	if *cardFlag == "" || *expFlag == "" {
 		flag.Usage()
 		return
-	}
-
-	if *keyFileFlag == "" && *keyFlag != "" {
-		keyFileFlag = keyFlag
 	}
 
 	// Load key from stdin, key-data flag or key-file flag
