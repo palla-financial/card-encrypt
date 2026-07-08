@@ -9,7 +9,18 @@ If you need an example for your stack, please contact us for assistance.
 
 ## - Releases
 
-The binaries under releases are built from the Go source. These are safe to use in production as part of your card enrollment flow, but please verify the binary and checksum.
+The binaries under releases are built from the Go source. These are safe to use in production as part of your card enrollment flow.
+
+**Before running a binary, verify it is an authentic, untampered Palla build.** Each release ships a signed SHA-256 checksum manifest (`SHA256SUMS` + `SHA256SUMS.sig`) alongside Palla's public signing key (`palla-card-encrypt-pubkey.pem`). The manifest is signed by a key held in Palla's AWS KMS — the private key cannot be exported, and signing is access-controlled and audited. See **[VERIFICATION.md](./VERIFICATION.md)** for full step-by-step instructions.
+
+Quick verify (macOS/Linux, requires only `openssl`):
+
+```
+openssl dgst -sha256 -verify palla-card-encrypt-pubkey.pem -signature SHA256SUMS.sig SHA256SUMS   # prints: Verified OK
+shasum -a 256 -c SHA256SUMS                                                                        # Linux: sha256sum -c SHA256SUMS
+```
+
+Only use a binary if both checks succeed.
 
 Usage:
 
